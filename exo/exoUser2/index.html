@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>RandomUser</title>
+  </head>
+  <body>
+    <h1 class="text-center my-3">Trouve ton âme sœur</h1>
+    <h4 class="text-center p-2">Choisi tes critères de sélection</h4>
+    <div class="container d-flex">
+      <div class="w-25 mx-auto my-3">
+        <label for="race" class="form-label">Sexe</label>
+        <select class="form-select my-auto" id="sexe">
+          <option selected value="male">Homme</option>
+          <option value="female">Femme</option>
+        </select>
+      </div>
+      <div class="w-25 mx-auto my-3">
+        <label for="pays" class="form-label">Pays</label>
+        <select class="form-select my-auto" id="pays">
+          <option selected value="France">France</option>
+          <option value="Spain">Espagne</option>
+          <option value="Netherlands">Pays-Bas</option>
+          <option value="Germany">Allemagne</option>
+        </select>
+      </div>
+      <div class="w-25 mx-auto my-3">
+        <label for="race" class="form-label">Nombre</label>
+        <input type="text" class="input-group" id="number" />
+      </div>
+    </div>
+    <div class="text-center py-3">
+      <button class="btn btn-success" id="btn">Lance la recherche</button>
+    </div>
+    <div
+      class="container my-5 d-flex justify-content-evenly align-items-center p-5 flex-wrap row-gap-3"
+      id="container"
+    ></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const contain = document.getElementById("container");
+      const sexe = document.getElementById("sexe");
+      const pays = document.getElementById("pays");
+      const nombre = document.getElementById("number");
+      const btn = document.getElementById("btn");
+
+      btn.addEventListener("click", function () {
+        contain.innerHTML = "";
+        let requis = Number(nombre.value);
+        fetch("https://randomuser.me/api/?results=100")
+          .then((Response) => {
+            if (Response.ok) {
+              return Response.json();
+            } else {
+              console.log("Error");
+              return "";
+            }
+          })
+          .then((res) => {
+            let data = res.results;
+            console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+
+      // const img = document.getElementById("img");
+      // const prenom = document.getElementById("firstname");
+      // const nom = document.getElementById("lastname");
+      // const pays = document.getElementById("country");
+    </script>
+  </body>
+</html>

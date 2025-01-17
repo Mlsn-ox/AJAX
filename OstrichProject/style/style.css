@@ -1,0 +1,65 @@
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+body {
+  min-height: 100vh;
+}
+
+.ostrich {
+  min-height: 100vh;
+  background-image: url(./pexels-pixabay-208010.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.savanna {
+  min-height: 100vh;
+  background-image: url(./savanna.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.bru {
+  background: linear-gradient(155deg, #ffffffb0 0%, #ffffff00 100%);
+  color: black;
+  min-height: 100vh;
+}
+
+.bru2 {
+  background: #ffffff8a;
+  color: black;
+  min-height: 100vh;
+  box-shadow: 0 0 13px #ffffffe8;
+}
+
+.success {
+  color: #266e1c;
+  animation-name: fade;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+
+.error {
+  color: #720e0e;
+  text-shadow: 1px 1px #1a1a1a50;
+  animation-name: fade;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-delay: 3s;
+}
+
+.message {
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

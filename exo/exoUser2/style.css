@@ -1,0 +1,15 @@
+span + span {
+  text-transform: uppercase;
+}
+
+.width {
+  width: 250px;
+}
+
+input {
+  background-color: transparent;
+  border: 1px solid #6b68688c;
+  padding: 0.4rem;
+  border-radius: 5px;
+  color: #b3b3b3;
+}

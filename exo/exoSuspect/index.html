@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>RandomSuspect</title>
+  </head>
+  <body>
+    <h1 class="text-center pt-4">Gestion des suspects</h1>
+    <div
+      class="container py-4 d-flex flex-column flex-xl-row row-gap-5 column-gap-4 align-items-center align-items-xl-start"
+    >
+      <ul class="list-group w-100 order-xl-2">
+        <h2>Suspect interrogé</h2>
+        <li class="list-group-item my-3 py-3 text-center suspect">
+          Commencer à interroger les suspects
+        </li>
+        <div class="buttons px-xl-5 w-100 text-center">
+          <button class="btn btn-warning py-2 me-xl-4 inter">
+            Interroger un suspect
+          </button>
+          <button class="btn btn-danger py-2 my-3 cellule">
+            Garder ce suspect
+          </button>
+        </div>
+      </ul>
+      <ul class="list-group w-100 order-xl-1 suspects">
+        <h2 class="pb-3">Liste des suspects</h2>
+      </ul>
+    </div>
+    <script>
+      const btnInterroge = document.querySelector(".inter");
+      const btnSuspect = document.querySelector(".cellule");
+      const ul = document.querySelector(".suspects");
+      const suspect = document.querySelector(".suspect");
+      const liste = ul.childNodes;
+      let prisonnier;
+
+      remplissage();
+
+      btnInterroge.addEventListener("click", function () {
+        let random = Math.floor(Math.random() * (liste.length - 3)) + 3;
+        suspect.innerHTML = liste[random].innerHTML;
+        liste[random].remove();
+        if (liste.length === 3) {
+          setTimeout(function () {
+            suspect.innerHTML =
+              "La liste est vide, patientez pendant le rechargement de la liste...";
+            setTimeout(() => remplissage(), 1000);
+          }, 2000);
+        }
+        prison();
+      });
+
+      btnSuspect.addEventListener("click", function () {
+        prisonnier = suspect.innerHTML;
+        suspect.innerHTML = "Commencer à interroger les suspects";
+        prison();
+      });
+
+      function remplissage() {
+        fetch("https://randomuser.me/api/?results=5")
+          .then((Response) => {
+            if (Response.ok) {
+              return Response.json();
+            } else {
+              console.log("Error");
+              return "";
+            }
+          })
+          .then((res) => {
+            let data = res.results;
+            for (let i = 0; i < data.length; i++) {
+              if (prisonnier && i === 0) {
+                ul.innerHTML += `<li class="list-group-item">${prisonnier}</li>`;
+                btnSuspect.disabled = false;
+                prisonnier = false;
+                continue;
+              }
+              const element = data[i];
+              let nomComplet = `${element.name.first} ${element.name.last}`;
+              ul.innerHTML += `<li class="list-group-item">${nomComplet}</li>`;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        suspect.innerHTML = "Commencer à interroger les suspects";
+        prison();
+      }
+
+      function prison() {
+        if (
+          prisonnier ||
+          suspect.innerHTML === "Commencer à interroger les suspects"
+        ) {
+          btnSuspect.disabled = true;
+        } else {
+          btnSuspect.disabled = false;
+        }
+      }
+    </script>
+  </body>
+</html>

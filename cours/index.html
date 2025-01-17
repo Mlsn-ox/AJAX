@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>LES API</title>
+  </head>
+  <body>
+    <h1 class="text-center text-danger">LES API</h1>
+    <!-- 
+    Application programming interface (interface de programmation)
+
+    Une api est un ensemble normalisé d'objets (informatiques),de méthodes,de constantes
+    et de données qui sert de façade par laquelle une application/logiciel offre des services à d'autres applications/logiciels.
+    Elle est offerte par une bibliothèque logiciel/serviceweb  accompagnée d'une description qui spécifie comment les programmes 
+    "consommateurs" peuvent se servir des fonctionnalités du programme "fournisseur".
+    
+    -->
+    <div class="text-center">
+      <select id="race"></select>
+    </div>
+    <div class="text-center">
+      <img id="img" width="30%" src="" alt="chat" />
+    </div>
+    <p class="text-center" id="width"></p>
+    <p class="text-center" id="height"></p>
+
+    <p class="text-center" id="intelligence"></p>
+    <p class="text-center" id="social"></p>
+
+    <div class="text-center mt-4">
+      <button id="btn" class="btn btn-primary">Un autre chat</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Exemple d'AJAX
+      on a chope cats api et on recupere les données de l'api
+       -->
+    <script>
+      const img = document.getElementById("img");
+      const width = document.getElementById("width");
+      const height = document.getElementById("height");
+      const btn = document.getElementById("btn");
+      const raceSelect = document.getElementById("race");
+
+      const intelligence = document.getElementById("intelligence");
+      const soc = document.getElementById("social");
+
+      let options = "";
+
+      btn.addEventListener("click", function () {
+        let catRace = raceSelect.value;
+        fetch(
+          `https://api.thecatapi.com/v1/images/search?limit=1&breed_ids=${catRace}&api_key=live_en15dc0PF7EgG4U8HUtUyTch3cEKiDzY5JMtplf4gyfAmTYxDDTsmtAgp8QWFIwg`
+        ) //Fetch envoie la requête donc l'url à l'API
+          //Il va devoir attendre une réponse (asynchrone)
+          .then((Response) => Response.json()) // ici les données sont reçues.
+          .then((res) => {
+            console.log(res);
+            let data = res[0]; //Ici on simplifie l'écriture de la réponse.
+            let w = data.width;
+            let h = data.height;
+            let im = data.url;
+            img.src = im;
+
+            width.innerHTML = `La longueur de l'image est de ${w}pixels`;
+            height.innerHTML = `La hauteur de l'image est de ${h}pixels`;
+            console.log(w, h, im);
+
+            let int = data.breeds[0].intelligence;
+            let social = data.breeds[0].stranger_friendly;
+
+            //etoile pour l'intelligence
+
+            intelligence.innerHTML = "Intelligence: ";
+            for (let i = 0; i < int; i++) {
+              intelligence.innerHTML += "⭐";
+            }
+            //etoile pour la sociabilité
+
+            soc.innerHTML = "Sociabilité: ";
+            for (let i = 0; i < social; i++) {
+              soc.innerHTML += "⭐";
+            }
+          });
+      });
+
+      //Recuperation des races de chats
+      //Pour les mettre dans le select
+
+      fetch("https://api.thecatapi.com/v1/breeds")
+        .then((Response) => Response.json())
+        .then((races) => {
+          console.log(races);
+          for (race of races) {
+            let raceId = race.id;
+            let name = race.name;
+            options += `<option value='${raceId}'>${name}</option>`;
+          }
+          raceSelect.innerHTML = options;
+        });
+      /*let data = res.results[0]; let paysClient = data.location.country; let
+prenomClient = data.name.first; let nomClient = data.name.last; let photoClient
+= data.picture.large; let divCard = `
+<div class="card width">
+  <img
+    src="${photoClient}"
+    alt="Données client"
+    class="rounded-5 m-3"
+    id="img"
+  />
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <span id="firstname">${prenomClient}</span>
+        <span id="lastname">${nomClient}</span>
+      </li>
+      <li class="list-group-item" id="country">${paysClient}</li>
+    </ul>
+  </div>
+</div>
+`; contain.innerHTML += divCard;
+*/
+    </script>
+  </body>
+</html>
